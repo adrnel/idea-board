@@ -4,38 +4,50 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import DeleteIcon from '@material-ui/icons/Delete';
 import './Ideas.css'
-
-const ideaStyle = {
-  display: 'inline-block',
-  margin: 10,
-  height: 150,
-  width: 150
-};
 
 class Ideas extends Component {
   render() {
     return (
       <div>
         <Card className="ideas-card">
-          <CardContent>
-            <Typography color="textSecondary">
-              Word of the Day
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
+          <div className="idea-date">
+            Jan 1st
+          </div>
+          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
+            <DeleteIcon />
+          </Button>
+          <div className="idea-title" contentEditable="true">
+            React
+          </div>
+          <textarea className="idea-text-body" defaultValue="React" />
         </Card>
+
         <Card className="ideas-card">
-          <CardContent>
-            <Typography color="textSecondary">
-              Word of the Day
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
+          <div className="idea-date">
+            Jan 1st
+          </div>
+          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
+            <DeleteIcon />
+          </Button>
+          <div className="idea-title" contentEditable="true">
+            React
+          </div>
+          <textarea className="idea-text-body" defaultValue="React" />
+        </Card>
+
+        <Card className="ideas-card">
+          <div className="idea-date">
+            Jan 1st
+          </div>
+          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
+            <DeleteIcon />
+          </Button>
+          <div className="idea-title" contentEditable="true">
+            React
+          </div>
+          <textarea className="idea-text-body" defaultValue="React" />
         </Card>
       </div>
     )

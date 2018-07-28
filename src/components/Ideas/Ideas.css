@@ -4,3 +4,46 @@
     height: 150px;
     width: 150px;
 }
+
+.ideas-card:hover Button.idea-close-button {
+    visibility: visible;
+}
+
+.idea-date {
+    text-align: left;
+    padding: 5px 0 0 5px;
+    font-size: 10px;
+}
+
+Button.idea-close-button {
+    position: relative;
+    top: -16px;
+    right: -56px;
+    width: 36px;
+    height: 36px;
+    z-index: 5;
+    visibility: hidden;
+}
+
+.idea-title {
+    position: relative;
+    top: -42px;
+    font-weight: 700;
+}
+
+.idea-title:focus {
+    outline: none;
+    border: lightgray 1px solid;
+}
+
+.idea-text-body {
+    height: 100px;
+    top: -31px;
+    position: relative;
+    border: none;
+}
+
+.idea-text-body:focus {
+    outline: none;
+    border: lightgray 1px solid;
+}
