@@ -25,11 +25,18 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // get request would actually look something like: axios.get(`https://ideaboard.com/ideas/`)
-    getIdeas()
-      .then(res => {
-        this.setState({cards: res.data.ideas});
-      })
+    if(localStorage.getItem('cards')){
+      this.setState({cards: JSON.parse(localStorage.getItem('cards'))});
+    } else {
+      getIdeas()
+        .then(res => {
+          this.setState({cards: res.data.ideas});
+        })
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.cards.length > 0) localStorage.setItem('cards', JSON.stringify(prevState.cards))
   }
 
   updateTitle(title, id) {
