@@ -5,7 +5,7 @@ import NewIdeaButton from './components/NewIdeaButton';
 import Notification from './components/Notification';
 import axios from 'axios';
 import './App.css';
-import { getIdeas, addIdeas, deleteIdeas } from './api';
+import { getIdeas, addIdeas, deleteIdeas, updateIdeaTitle, updateIdeaText } from './api';
 
 const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
 
@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // get request would actually look something like: axios.get(`https://ideaboard.com/idea/get`)
+    // get request would actually look something like: axios.get(`https://ideaboard.com/ideas/`)
     getIdeas()
       .then(res => {
         this.setState({cards: res.data.ideas});
@@ -42,25 +42,51 @@ class App extends Component {
   }
 
   updateTitle(title, id) {
-    this.setState((prevState) => {
-      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
-      prevState.cards[index].title = title;
-      prevState.isFocus = false;
-      return prevState
-    });
+    // post request would actually look something like: axios.post(`https://ideaboard.com/idea/delete/, { title, id }`)
+    updateIdeaTitle(title, id)
+      .then(res => {
+        this.setState((prevState) => {
+          const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+          prevState.cards[index].title = res.data.title;
+          prevState.isFocus = false;
+          prevState.notificationMessage = 'Idea title updated successfully';
+          prevState.isNotificationOpen = true;
+          return prevState
+        });
+      })
+      .catch(() => {
+        this.setState((prevState) => {
+          prevState.notificationMessage = 'Error something has gone wrong';
+          prevState.isNotificationOpen = true;
+          return prevState;
+        })
+      })
   }
 
   updateBodyText(bodyText, id) {
-    this.setState((prevState) => {
-      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
-      prevState.cards[index].bodyText = bodyText;
-      prevState.isFocus = false;
-      return prevState
-    });
+    // post request would actually look something like: axios.post(`https://ideaboard.com/idea/delete/, { bodyText, id }`)
+    updateIdeaText(bodyText, id)
+      .then(res => {
+        this.setState((prevState) => {
+          const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+          prevState.cards[index].bodyText = res.data.body;
+          prevState.isFocus = false;
+          prevState.notificationMessage = 'Idea text updated successfully';
+          prevState.isNotificationOpen = true;
+          return prevState
+        });
+      })
+      .catch(() => {
+        this.setState((prevState) => {
+          prevState.notificationMessage = 'Error something has gone wrong';
+          prevState.isNotificationOpen = true;
+          return prevState;
+        })
+      })
   }
 
   addIdea() {
-    // get request would actually look something like: axios.get(`https://ideaboard.com/idea/new`)
+    // get request would actually look something like: axios.get(`https://ideaboard.com/ideas/new`)
     addIdeas()
       .then(res => {
         this.setState((prevState) => {
@@ -68,7 +94,7 @@ class App extends Component {
           const created_date = res.data.created_date;
           prevState.isFocus = true;
           prevState.focusId = id;
-          prevState.notificationMessage = 'New Note added successfully';
+          prevState.notificationMessage = 'New idea added successfully';
           prevState.isNotificationOpen = true;
           return prevState.cards.push({...defaultCard, id, created_date});
         });
@@ -91,7 +117,7 @@ class App extends Component {
             const responseId = res.data.id;
             const index = prevState.cards.findIndex((element) =>  element.id === Number(responseId));
             prevState.cards.splice(index, 1);
-            prevState.notificationMessage = 'Note deleted successfully';
+            prevState.notificationMessage = 'idea deleted successfully';
             prevState.isNotificationOpen = true;
             return prevState;
           })

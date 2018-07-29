@@ -26,7 +26,25 @@ export function addIdeas() {
 export function deleteIdeas(id) {
   return delay().then(() => {
     return {
-      data: { id: id },
+      data: { id },
+      status: 202
+    };
+  });
+}
+
+export function updateIdeaTitle(title, id) {
+  return delay().then(() => {
+    return {
+      data: { id, title },
+      status: 202
+    };
+  });
+}
+
+export function updateIdeaText(bodyText, id) {
+  return delay().then(() => {
+    return {
+      data: { id, body: bodyText },
       status: 202
     };
   });
