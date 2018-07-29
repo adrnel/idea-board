@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Header from './components/Header';
 import Ideas from './components/Ideas';
 import NewIdeaButton from './components/NewIdeaButton';
+import Notification from './components/Notification';
+import axios from 'axios';
 import './App.css';
 
 const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
@@ -19,12 +21,15 @@ class App extends Component {
     this.state = {
       cards: [{...defaultCard}],
       isFocus: false,
-      focusId: 0
+      focusId: 0,
+      notificationMessage: '',
+      isNotificationOpen: false
     };
     this.updateTitle = this.updateTitle.bind(this);
     this.updateBodyText = this.updateBodyText.bind(this);
     this.addIdea = this.addIdea.bind(this);
     this.deleteIdea = this.deleteIdea.bind(this);
+    this.closeNotification = this.closeNotification.bind(this);
   }
 
   updateTitle(title, id) {
@@ -55,11 +60,30 @@ class App extends Component {
   }
 
   deleteIdea(id) {
-    this.setState((prevState) => {
-      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
-      prevState.cards.splice(index, 1);
-      return prevState;
-    });
+    // axios.post(`https://ideaboard.com/idea/delete/${id}`)
+    axios.get(`https://jsonplaceholder.typicode.com/users`)
+      .then(res => {
+        // if (res.status === 202) {
+        this.setState((prevState) => {
+          console.log('res1: ', res)
+          const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+          prevState.cards.splice(index, 1);
+          prevState.notificationMessage = 'Note deleted successfully';
+          prevState.isNotificationOpen = true;
+          return prevState;
+        })
+      })
+      .catch(() => {
+        this.setState((prevState) => {
+          prevState.notificationMessage = 'Error something has gone wrong';
+          prevState.isNotificationOpen = true;
+          return prevState;
+        })
+      })
+  }
+
+  closeNotification(title, id) {
+    this.setState({ isNotificationOpen: false });
   }
 
   render() {
@@ -75,6 +99,11 @@ class App extends Component {
           updateBodyText={this.updateBodyText}
         />
         <NewIdeaButton addIdea={this.addIdea}/>
+        <Notification
+          message={this.state.notificationMessage}
+          isOpen={this.state.isNotificationOpen}
+          close={this.closeNotification}
+        />
       </div>
     );
   }
