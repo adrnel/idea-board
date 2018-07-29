@@ -1,57 +1,44 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
 import './Ideas.css'
 
 class Ideas extends Component {
+  renderCards(cards) {
+    var cardsArray = [];
+    for (var i = 0; i < cards.length; i++) {
+      cardsArray.push(<Card className="ideas-card" key={i}>
+        <div className="idea-date">
+          {cards[i].date}
+        </div>
+        <Button value={i} variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={(e)=>{this.props.deleteIdea(e.currentTarget.value)}}>
+          <DeleteIcon />
+        </Button>
+        <div className="idea-title" contentEditable="true" suppressContentEditableWarning="true">
+          {cards[i].title}
+        </div>
+        <textarea className="idea-text-body" defaultValue={cards[i].bodyText} />
+      </Card>);
+    }
+    return <div>{cardsArray}</div>;
+  }
+
   render() {
     return (
-      <div>
-        <Card className="ideas-card">
-          <div className="idea-date">
-            Jan 1st
-          </div>
-          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
-            <DeleteIcon />
-          </Button>
-          <div className="idea-title" contentEditable="true">
-            React
-          </div>
-          <textarea className="idea-text-body" defaultValue="React" />
-        </Card>
-
-        <Card className="ideas-card">
-          <div className="idea-date">
-            Jan 1st
-          </div>
-          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
-            <DeleteIcon />
-          </Button>
-          <div className="idea-title" contentEditable="true">
-            React
-          </div>
-          <textarea className="idea-text-body" defaultValue="React" />
-        </Card>
-
-        <Card className="ideas-card">
-          <div className="idea-date">
-            Jan 1st
-          </div>
-          <Button variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={()=>{console.log('clicked')}}>
-            <DeleteIcon />
-          </Button>
-          <div className="idea-title" contentEditable="true">
-            React
-          </div>
-          <textarea className="idea-text-body" defaultValue="React" />
-        </Card>
-      </div>
+      this.renderCards(this.props.cards)
     )
   }
 }
-
+Ideas.propTypes = {
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      date: PropTypes.string,
+      title: PropTypes.string,
+      bodyText: PropTypes.string
+    })
+  ).isRequired,
+  deleteIdea: PropTypes.func.isRequired
+};
 export default Ideas;
