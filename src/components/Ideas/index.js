@@ -25,8 +25,9 @@ class Ideas extends Component {
         </Button>
         <input
           className={`idea-title ${cards[i].id}`}
-          placeholder={cards[i].title + cards[i].id}
+          placeholder={cards[i].title}
           onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
+          autoFocus={this.props.isFocus && this.props.focusId === cards[i].id}
         />
         <textarea
           className={`idea-text-body ${cards[i].id}`}
@@ -53,6 +54,8 @@ Ideas.propTypes = {
     })
   ).isRequired,
   updateTitle: PropTypes.func.isRequired,
+  isFocus: PropTypes.bool.isRequired,
+  focusId: PropTypes.number.isRequired,
   updateBodyText: PropTypes.func.isRequired,
   deleteIdea: PropTypes.func.isRequired
 };
