@@ -17,6 +17,7 @@ export function getIdeas() {
 export function addIdeas() {
   return delay().then(() => {
     return { data: {
+      // assuming a real api would make sure id is unique on the backend
       id: Math.floor(Math.random() * Math.floor(10000000)),
       created_date: (new Date()).toLocaleDateString("en-US"),
     } };
