@@ -57,4 +57,9 @@ Button.idea-close-button {
     position: relative;
     color: red;
     top: -31px;
+    visibility: hidden;
+}
+
+.ideas-card:focus-within .char-limit {
+    visibility: visible;
 }

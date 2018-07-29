@@ -6,6 +6,14 @@ import PropTypes from 'prop-types';
 import './Ideas.css'
 
 class Ideas extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      charlimit: 0
+    }
+  }
+
   renderCards(cards) {
     if (cards.length > 0) {
       const cardsArray = [];
@@ -32,9 +40,20 @@ class Ideas extends Component {
           />
           <textarea
             className={`idea-text-body ${cards[i].id}`}
+            maxLength="150"
             defaultValue={cards[i].bodyText}
-            onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
-          <div className="char-limit">150</div>
+            onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
+            onChange={(e) => {
+              const charLength = e.currentTarget.value.length;
+              this.setState((prevState) => {
+              prevState.charlimit = charLength;
+              return prevState
+            })}}
+          />
+          <div className="char-limit">{150 - this.state.charlimit < 16 &&
+          150 - this.state.charlimit > -1 ?
+          150 - this.state.charlimit :
+            ''}</div>
         </Card>);
       }
       return <div>{cardsArray}</div>;
