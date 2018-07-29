@@ -14,8 +14,7 @@ class App extends Component {
       isFocus: false,
       focusId: 0,
       notificationMessage: '',
-      isNotificationOpen: false,
-      sortByString: 'title',
+      isNotificationOpen: false
     };
     this.updateTitle = this.updateTitle.bind(this);
     this.updateBodyText = this.updateBodyText.bind(this);
@@ -140,7 +139,24 @@ class App extends Component {
   }
 
   sortHandler(sortByString) {
-    this.setState({ sortByString });
+    this.setState((prevState) => {
+      let sortedCards = [...prevState.cards];
+      sortedCards.sort((a, b)=> {
+        if (sortByString === 'Title'){
+          if(a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+          if(a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+          return 0;
+        }
+        if (sortByString === 'Date'){
+          if(a.date > b.date) return -1;
+          if(a.date < b.date) return 1;
+          return 0;
+        }
+        return a.date - b.date
+      });
+      prevState.cards = sortedCards;
+      return prevState;
+    })
   }
 
   render() {
@@ -154,7 +170,6 @@ class App extends Component {
           deleteIdea={this.deleteIdea}
           updateTitle={this.updateTitle}
           updateBodyText={this.updateBodyText}
-          sortByString={this.state.sortByString}
         />
         <NewIdeaButton addIdea={this.addIdea}/>
         <Notification

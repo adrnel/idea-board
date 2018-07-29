@@ -8,19 +8,6 @@ import './Ideas.css'
 class Ideas extends Component {
   renderCards(cards) {
     if (cards.length > 0) {
-      const sortedCards = cards.sort((a, b)=> {
-        if (this.props.sortByString === 'Title'){
-          if(a.title.toLowerCase() < b.title.toLowerCase()) return -1;
-          if(a.title.toLowerCase() > b.title.toLowerCase()) return 1;
-          return 0;
-        }
-        if (this.props.sortByString === 'Date'){
-          if(a.date > b.date) return -1;
-          if(a.date < b.date) return 1;
-          return 0;
-        }
-        return a.date - b.date
-      });
       const cardsArray = [];
       for (let i = 0; i < cards.length; i++) {
         cardsArray.push(<Card className="ideas-card" key={cards[i].id}>
@@ -56,7 +43,6 @@ class Ideas extends Component {
   }
 
   render() {
-    console.log(this.props.sortByString);
     return (
       this.renderCards(this.props.cards)
     )
@@ -76,8 +62,7 @@ Ideas.propTypes = {
   isFocus: PropTypes.bool.isRequired,
   focusId: PropTypes.number.isRequired,
   updateBodyText: PropTypes.func.isRequired,
-  deleteIdea: PropTypes.func.isRequired,
-  sortByString: PropTypes.string.isRequired,
+  deleteIdea: PropTypes.func.isRequired
 };
 
 export default Ideas;
