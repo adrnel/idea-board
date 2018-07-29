@@ -4,11 +4,14 @@ import Ideas from './components/Ideas';
 import NewIdeaButton from './components/NewIdeaButton';
 import './App.css';
 
+const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
+
 const defaultCard = {
   date: (new Date()).toLocaleDateString("en-US"),
   title: 'Idea Title',
   bodyText: 'Enter text here',
-}
+  id: generateRandomNumber(),
+};
 
 class App extends Component {
   constructor(props) {
@@ -24,27 +27,30 @@ class App extends Component {
 
   updateTitle(title, id) {
     this.setState((prevState) => {
-      prevState.cards[id].title = title;
+      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+      prevState.cards[index].title = title;
       return prevState
     });
   }
 
   updateBodyText(bodyText, id) {
     this.setState((prevState) => {
-      prevState.cards[id].bodyText = bodyText;
+      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+      prevState.cards[index].bodyText = bodyText;
       return prevState
     });
   }
 
   addIdea() {
     this.setState((prevState) => {
-      return prevState.cards.push({...defaultCard});
+      return prevState.cards.push({...defaultCard, id : generateRandomNumber()});
     });
   }
 
   deleteIdea(id) {
     this.setState((prevState) => {
-      prevState.cards.splice(Number(id), 1);
+      const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+      prevState.cards.splice(index, 1);
       return prevState;
     });
   }

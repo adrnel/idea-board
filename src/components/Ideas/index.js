@@ -9,12 +9,12 @@ class Ideas extends Component {
   renderCards(cards) {
     const cardsArray = [];
     for (let i = 0; i < cards.length; i++) {
-      cardsArray.push(<Card className="ideas-card" key={i}>
+      cardsArray.push(<Card className="ideas-card" key={cards[i].id}>
         <div className="idea-date">
           {cards[i].date}
         </div>
         <Button
-          value={i}
+          value={cards[i].id}
           variant="fab"
           color="secondary"
           aria-label="Add"
@@ -24,12 +24,12 @@ class Ideas extends Component {
           <DeleteIcon />
         </Button>
         <input
-          className={`idea-title ${i}`}
-          placeholder={cards[i].title + i}
+          className={`idea-title ${cards[i].id}`}
+          placeholder={cards[i].title + cards[i].id}
           onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
         />
         <textarea
-          className={`idea-text-body ${i}`}
+          className={`idea-text-body ${cards[i].id}`}
           placeholder={cards[i].bodyText}
           onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
       </Card>);
@@ -48,7 +48,8 @@ Ideas.propTypes = {
     PropTypes.shape({
       date: PropTypes.string,
       title: PropTypes.string,
-      bodyText: PropTypes.string
+      bodyText: PropTypes.string,
+      id: PropTypes.number,
     })
   ).isRequired,
   updateTitle: PropTypes.func.isRequired,
