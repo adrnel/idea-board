@@ -26,14 +26,15 @@ class Ideas extends Component {
           </Button>
           <input
             className={`idea-title ${cards[i].id}`}
-            placeholder={cards[i].title}
+            defaultValue={cards[i].title}
             onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
             autoFocus={this.props.isFocus && this.props.focusId === cards[i].id}
           />
           <textarea
             className={`idea-text-body ${cards[i].id}`}
-            placeholder={cards[i].bodyText}
+            defaultValue={cards[i].bodyText}
             onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
+          <div className="char-limit">150</div>
         </Card>);
       }
       return <div>{cardsArray}</div>;

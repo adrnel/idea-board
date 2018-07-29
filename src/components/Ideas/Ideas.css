@@ -42,7 +42,7 @@ Button.idea-close-button {
 }
 
 .idea-text-body {
-    height: 100px;
+    height: 85px;
     top: -31px;
     position: relative;
     border: none;
@@ -51,4 +51,10 @@ Button.idea-close-button {
 .idea-text-body:focus {
     outline: none;
     border: lightgray 1px solid;
+}
+
+.char-limit {
+    position: relative;
+    color: red;
+    top: -31px;
 }
