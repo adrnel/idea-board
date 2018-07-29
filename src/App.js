@@ -5,6 +5,7 @@ import NewIdeaButton from './components/NewIdeaButton';
 import Notification from './components/Notification';
 import axios from 'axios';
 import './App.css';
+import { getIdeas, deleteIdeas } from './api';
 
 const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
 
@@ -30,6 +31,14 @@ class App extends Component {
     this.addIdea = this.addIdea.bind(this);
     this.deleteIdea = this.deleteIdea.bind(this);
     this.closeNotification = this.closeNotification.bind(this);
+  }
+
+  componentDidMount() {
+    // get request would actually look something like: axios.get(`https://ideaboard.com/idea/get`)
+    getIdeas()
+      .then(res => {
+        this.setState({cards: res.data});
+      })
   }
 
   updateTitle(title, id) {
@@ -60,18 +69,24 @@ class App extends Component {
   }
 
   deleteIdea(id) {
-    // axios.post(`https://ideaboard.com/idea/delete/${id}`)
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
+    // post request would actually look something like: axios.post(`https://ideaboard.com/idea/delete/, { id }`)
+    deleteIdeas()
       .then(res => {
-        // if (res.status === 202) {
-        this.setState((prevState) => {
-          console.log('res1: ', res)
-          const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
-          prevState.cards.splice(index, 1);
-          prevState.notificationMessage = 'Note deleted successfully';
-          prevState.isNotificationOpen = true;
-          return prevState;
-        })
+        if(res.status === 202){
+          this.setState((prevState) => {
+            const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+            prevState.cards.splice(index, 1);
+            prevState.notificationMessage = 'Note deleted successfully';
+            prevState.isNotificationOpen = true;
+            return prevState;
+          })
+        } else {
+          this.setState((prevState) => {
+            prevState.notificationMessage = 'Error something has gone wrong';
+            prevState.isNotificationOpen = true;
+            return prevState;
+          })
+        }
       })
       .catch(() => {
         this.setState((prevState) => {
