@@ -1,6 +1,6 @@
 import testIdeas from '../data/testIdeas.json';
 
-function delay(timeout = 1000) {
+function delay(timeout = 500) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
@@ -10,12 +10,24 @@ function delay(timeout = 1000) {
 
 export function getIdeas() {
   return delay().then(() => {
-    return { data: [...testIdeas] };
+    return { data: { ideas: [...testIdeas] } };
   });
 }
 
-export function deleteIdeas() {
+export function addIdeas() {
   return delay().then(() => {
-    return { status: 202 };
+    return { data: {
+      id: Math.floor(Math.random() * Math.floor(10000000)),
+      created_date: (new Date()).toLocaleDateString("en-US"),
+    } };
+  });
+}
+
+export function deleteIdeas(id) {
+  return delay().then(() => {
+    return {
+      data: { id: id },
+      status: 202
+    };
   });
 }

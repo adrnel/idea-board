@@ -5,7 +5,7 @@ import NewIdeaButton from './components/NewIdeaButton';
 import Notification from './components/Notification';
 import axios from 'axios';
 import './App.css';
-import { getIdeas, deleteIdeas } from './api';
+import { getIdeas, addIdeas, deleteIdeas } from './api';
 
 const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
 
@@ -37,7 +37,7 @@ class App extends Component {
     // get request would actually look something like: axios.get(`https://ideaboard.com/idea/get`)
     getIdeas()
       .then(res => {
-        this.setState({cards: res.data});
+        this.setState({cards: res.data.ideas});
       })
   }
 
@@ -60,21 +60,36 @@ class App extends Component {
   }
 
   addIdea() {
-    this.setState((prevState) => {
-      const id = generateRandomNumber();
-      prevState.isFocus = true;
-      prevState.focusId = id;
-      return prevState.cards.push({...defaultCard, id});
-    });
+    // get request would actually look something like: axios.get(`https://ideaboard.com/idea/new`)
+    addIdeas()
+      .then(res => {
+        this.setState((prevState) => {
+          const id = res.data.id;
+          const created_date = res.data.created_date;
+          prevState.isFocus = true;
+          prevState.focusId = id;
+          prevState.notificationMessage = 'New Note added successfully';
+          prevState.isNotificationOpen = true;
+          return prevState.cards.push({...defaultCard, id, created_date});
+        });
+      })
+      .catch(() => {
+        this.setState((prevState) => {
+          prevState.notificationMessage = 'Error something has gone wrong';
+          prevState.isNotificationOpen = true;
+          return prevState;
+        })
+      })
   }
 
   deleteIdea(id) {
     // post request would actually look something like: axios.post(`https://ideaboard.com/idea/delete/, { id }`)
-    deleteIdeas()
+    deleteIdeas(id)
       .then(res => {
         if(res.status === 202){
           this.setState((prevState) => {
-            const index = prevState.cards.findIndex((element) =>  element.id === Number(id));
+            const responseId = res.data.id;
+            const index = prevState.cards.findIndex((element) =>  element.id === Number(responseId));
             prevState.cards.splice(index, 1);
             prevState.notificationMessage = 'Note deleted successfully';
             prevState.isNotificationOpen = true;
