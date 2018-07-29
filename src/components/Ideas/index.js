@@ -7,19 +7,31 @@ import './Ideas.css'
 
 class Ideas extends Component {
   renderCards(cards) {
-    var cardsArray = [];
-    for (var i = 0; i < cards.length; i++) {
+    const cardsArray = [];
+    for (let i = 0; i < cards.length; i++) {
       cardsArray.push(<Card className="ideas-card" key={i}>
         <div className="idea-date">
           {cards[i].date}
         </div>
-        <Button value={i} variant="fab" color="secondary" aria-label="Add" className="idea-close-button" onClick={(e)=>{this.props.deleteIdea(e.currentTarget.value)}}>
+        <Button
+          value={i}
+          variant="fab"
+          color="secondary"
+          aria-label="Add"
+          className="idea-close-button"
+          onClick={(e) => {this.props.deleteIdea(e.currentTarget.value)}}
+        >
           <DeleteIcon />
         </Button>
-        <div className="idea-title" contentEditable="true" suppressContentEditableWarning="true">
-          {cards[i].title}
-        </div>
-        <textarea className="idea-text-body" defaultValue={cards[i].bodyText} />
+        <input
+          className={`idea-title ${i}`}
+          placeholder={cards[i].title + i}
+          onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
+        />
+        <textarea
+          className={`idea-text-body ${i}`}
+          placeholder={cards[i].bodyText}
+          onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
       </Card>);
     }
     return <div>{cardsArray}</div>;
@@ -39,6 +51,8 @@ Ideas.propTypes = {
       bodyText: PropTypes.string
     })
   ).isRequired,
+  updateTitle: PropTypes.func.isRequired,
+  updateBodyText: PropTypes.func.isRequired,
   deleteIdea: PropTypes.func.isRequired
 };
 export default Ideas;

@@ -7,29 +7,45 @@ import './App.css';
 const defaultCard = {
   date: (new Date()).toLocaleDateString("en-US"),
   title: 'Idea Title',
-  bodyText: '',
+  bodyText: 'Enter text here',
 }
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: [defaultCard]
+      cards: [{...defaultCard}]
     };
+    this.updateTitle = this.updateTitle.bind(this);
+    this.updateBodyText = this.updateBodyText.bind(this);
     this.addIdea = this.addIdea.bind(this);
     this.deleteIdea = this.deleteIdea.bind(this);
   }
 
+  updateTitle(title, id) {
+    this.setState((prevState) => {
+      prevState.cards[id].title = title;
+      return prevState
+    });
+  }
+
+  updateBodyText(bodyText, id) {
+    this.setState((prevState) => {
+      prevState.cards[id].bodyText = bodyText;
+      return prevState
+    });
+  }
+
   addIdea() {
     this.setState((prevState) => {
-      return prevState.cards.push(defaultCard);
+      return prevState.cards.push({...defaultCard});
     });
   }
 
   deleteIdea(id) {
-    console.log('id: ', id)
     this.setState((prevState) => {
-      return prevState.cards.splice(id, 1);
+      prevState.cards.splice(Number(id), 1);
+      return prevState;
     });
   }
 
@@ -37,7 +53,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <Ideas cards={this.state.cards} deleteIdea={this.deleteIdea}/>
+        <Ideas cards={this.state.cards} deleteIdea={this.deleteIdea} updateTitle={this.updateTitle} updateBodyText={this.updateBodyText}/>
         <NewIdeaButton addIdea={this.addIdea}/>
       </div>
     );

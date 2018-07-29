@@ -29,6 +29,7 @@ Button.idea-close-button {
     position: relative;
     top: -34px;
     font-weight: 700;
+    border: none;
 }
 
 .idea-title:focus {
