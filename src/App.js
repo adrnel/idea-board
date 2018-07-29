@@ -3,24 +3,14 @@ import Header from './components/Header';
 import Ideas from './components/Ideas';
 import NewIdeaButton from './components/NewIdeaButton';
 import Notification from './components/Notification';
-import axios from 'axios';
 import './App.css';
 import { getIdeas, addIdeas, deleteIdeas, updateIdeaTitle, updateIdeaText } from './api';
-
-const generateRandomNumber = () => Math.floor(Math.random() * Math.floor(10000000));
-
-const defaultCard = {
-  date: (new Date()).toLocaleDateString("en-US"),
-  title: 'Idea Title',
-  bodyText: 'Enter text here',
-  id: generateRandomNumber(),
-};
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: [{...defaultCard}],
+      cards: [],
       isFocus: false,
       focusId: 0,
       notificationMessage: '',
@@ -91,12 +81,17 @@ class App extends Component {
       .then(res => {
         this.setState((prevState) => {
           const id = res.data.id;
-          const created_date = res.data.created_date;
+          const date = res.data.created_date;
           prevState.isFocus = true;
           prevState.focusId = id;
           prevState.notificationMessage = 'New idea added successfully';
           prevState.isNotificationOpen = true;
-          return prevState.cards.push({...defaultCard, id, created_date});
+          return prevState.cards.push({
+            title: 'Idea Title',
+            bodyText: 'Enter text here',
+            id,
+            date
+          });
         });
       })
       .catch(() => {

@@ -7,35 +7,39 @@ import './Ideas.css'
 
 class Ideas extends Component {
   renderCards(cards) {
-    const cardsArray = [];
-    for (let i = 0; i < cards.length; i++) {
-      cardsArray.push(<Card className="ideas-card" key={cards[i].id}>
-        <div className="idea-date">
-          {cards[i].date}
-        </div>
-        <Button
-          value={cards[i].id}
-          variant="fab"
-          color="secondary"
-          aria-label="Add"
-          className="idea-close-button"
-          onClick={(e) => {this.props.deleteIdea(e.currentTarget.value)}}
-        >
-          <DeleteIcon />
-        </Button>
-        <input
-          className={`idea-title ${cards[i].id}`}
-          placeholder={cards[i].title}
-          onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
-          autoFocus={this.props.isFocus && this.props.focusId === cards[i].id}
-        />
-        <textarea
-          className={`idea-text-body ${cards[i].id}`}
-          placeholder={cards[i].bodyText}
-          onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
-      </Card>);
+    if (cards.length > 0) {
+      const cardsArray = [];
+      for (let i = 0; i < cards.length; i++) {
+        cardsArray.push(<Card className="ideas-card" key={cards[i].id}>
+          <div className="idea-date">
+            {cards[i].date}
+          </div>
+          <Button
+            value={cards[i].id}
+            variant="fab"
+            color="secondary"
+            aria-label="Add"
+            className="idea-close-button"
+            onClick={(e) => {this.props.deleteIdea(e.currentTarget.value)}}
+          >
+            <DeleteIcon />
+          </Button>
+          <input
+            className={`idea-title ${cards[i].id}`}
+            placeholder={cards[i].title}
+            onBlur={(e) => {this.props.updateTitle(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}
+            autoFocus={this.props.isFocus && this.props.focusId === cards[i].id}
+          />
+          <textarea
+            className={`idea-text-body ${cards[i].id}`}
+            placeholder={cards[i].bodyText}
+            onBlur={(e) => {this.props.updateBodyText(e.currentTarget.value, e.currentTarget.className.split(' ')[1])}}/>
+        </Card>);
+      }
+      return <div>{cardsArray}</div>;
+    } else {
+      return <div className="no-cards-text" >Your ideas board is empty. Click the plus to begin adding ideas</div>
     }
-    return <div>{cardsArray}</div>;
   }
 
   render() {
